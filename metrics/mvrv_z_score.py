@@ -35,11 +35,13 @@ class MVRVMetric(BaseMetric):
         df['MVRV'] = df['MVRV'].ffill()
         df['MVRV'] = np.log(df['MVRV'] + 1)
 
-        high_rows = df.loc[df['PriceHigh'] == 1]
+        high_rows = df.loc[df['PriceHigh'] == 1].dropna(subset=['MVRV'])
+        high_rows = high_rows[np.isfinite(high_rows['MVRV'])]
         high_x = high_rows.index.values.reshape(-1, 1)
         high_y = high_rows['MVRV'].values.reshape(-1, 1)
 
-        low_rows = df.loc[df['PriceLow'] == 1]
+        low_rows = df.loc[df['PriceLow'] == 1].dropna(subset=['MVRV'])
+        low_rows = low_rows[np.isfinite(low_rows['MVRV'])]
         low_x = low_rows.index.values.reshape(-1, 1)
         low_y = low_rows['MVRV'].values.reshape(-1, 1)
 
